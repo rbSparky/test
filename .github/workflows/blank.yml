@@ -50,7 +50,7 @@ jobs:
             echo "Up to date with $current_version"
           else
             echo "Update to $new_version"
-            #gh auth login 
+            gh auth login 
             gh pr create --title "$new_version" --body ""
             #gh pr create --project "test"
           fi
