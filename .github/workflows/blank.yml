@@ -50,7 +50,7 @@ jobs:
       - name: Uncommitted change
         run: date +%s > report.txt
       - name: Create Pull Request
-        uses: rbSparky/test@v2
+        uses: rbSparky/test@v1
         
 
       # Runs a set of commands using the runners shell
