@@ -10,6 +10,7 @@ if [ $new_version == $current_version ]; then
 	echo "Up to date with $current_version"	
 else
 	echo "Update to $new_version"
+	echo "$new_version" > version.txt
 	gh auth login 
 	gh pr create --title "$new_version" --body ""	
 	#gh pr create --project "test"
