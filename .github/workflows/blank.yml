@@ -21,27 +21,29 @@ jobs:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+    steps:    
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a new script
+      
+      - name: Create issue using REST API
         run: |
-          current_version="v0.0"
-          new_version=$(git -c 'versionsort.suffix=-' \
-          ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/swig/swig/ '*.*.*' \
-          | tail --lines=1 \
-          | cut --delimiter='/' --fields=3)
-
-          if [ $new_version == $current_version ]; then
-            echo "Up to date with $current_version"
-          else
-            echo "Update to $new_version"
-            gh pr create --title "$new_version" --body ""
-            #gh pr create --project "test"
-          fi
-
+          curl --request POST \
+          --url https://api.github.com/repos/${{ github.repository }}/issues \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --header 'content-type: application/json' \
+          --data '{
+            "title": "Automated issue for commit: ${{ github.sha }}",
+            "body": "This issue was automatically created by the GitHub Action workflow **${{ github.workflow }}**. \n\n The commit hash was: _${{ github.sha }}_."
+            }' \
+          --fail      
+  
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "main"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_label: "feature, automated pr"
+          pr_title: "[Example] Simple demo"
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
