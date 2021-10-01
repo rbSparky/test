@@ -44,6 +44,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_label: "feature, automated pr"
           pr_title: "[Example] Simple demo"
+          branch: ${{ github.ref }}
+          base: main
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
