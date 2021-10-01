@@ -37,13 +37,21 @@ jobs:
             }' \
           --fail      
   
-      - name: pull-request
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "main"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_label: "feature, automated pr"
-          pr_title: "[Example] Simple demo"
+      - uses: actions/checkout@v2
+      - name: Create commits
+        run: |
+          git config user.name 'P E'
+          git config user.email 'PE@users.noreply.github.com'
+          date +%s > report.txt
+          git commit -am "Modify tracked file during workflow"
+          date +%s > new-report.txt
+          git add -A
+          git commit -m "Add untracked file during workflow"
+      - name: Uncommitted change
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: test/create-pull-request@v3
+        
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
