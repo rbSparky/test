@@ -38,7 +38,7 @@ jobs:
             echo "Up to date with $current_version"
           else
             echo "Update to $new_version"
-            #gh pr create --title "New version $new_version of swig has been released" --body ""
+            gh pr create --title "$new_version" --body ""
             #gh pr create --project "test"
           fi
 
