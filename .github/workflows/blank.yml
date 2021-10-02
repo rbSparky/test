@@ -1,8 +1,8 @@
 name: CI
 
 on:
-  push:
-    branches: [ testing ]
+  schedule:
+    - cron: '*/5 * * * *'
   pull_request:
     branches: [ main ]
   workflow_dispatch:
